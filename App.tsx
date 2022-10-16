@@ -10,77 +10,35 @@
 
 import React, { type PropsWithChildren } from 'react';
 import {
-  SafeAreaView,
   StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
   View,
 } from 'react-native';
-
-import {
-  Colors,
-} from 'react-native/Libraries/NewAppScreen';
 import MainRoute from './src/app/navigation/Route';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 import { persistor, store } from './src/app/store/Store';
 import { PersistGate } from 'redux-persist/integration/react';
 
-
-const Section: React.FC<
-  PropsWithChildren<{
-    title: string;
-  }>
-> = ({ children, title }) => {
-  const isDarkMode = useColorScheme() === 'dark';
+const App = () => {
   return (
     <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <NavigationContainer>
+            <StatusBar barStyle={'dark-content'} />
+            <MainRoute />
+          </NavigationContainer>
+        </PersistGate>
+      </Provider>
     </View>
-  );
-};
-
-const App = () => {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: !isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <NavigationContainer>
-          <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-          <MainRoute />
-        </NavigationContainer>
-      </PersistGate>
-    </Provider>
   );
 };
 
 const styles = StyleSheet.create({
   sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+    flex: 1,
+    backgroundColor: '#fff'
   },
   sectionTitle: {
     fontSize: 24,

@@ -23,6 +23,7 @@ const List = () => {
 
   useEffect(() => {
     getApiData();
+    console.log('cart is => ', cartItems)
   }, [])
 
   const getApiData = async () => {
@@ -40,15 +41,11 @@ const List = () => {
     if (filterProduct && filterProduct.length === 0) {
       newProduct.count = 1;
       dispatch(addAction([...cartItems, newProduct]))
-    } else {
-      let newCart = [...cartItems];
-      newCart.map((item: Products) => {
-        if (item.id === data.id) {
-          item.count += 1;
-        }
-      })
-      dispatch(addAction(newCart))
     }
+  }
+
+  const getValue = (a: any, b: any) => {
+    return a+b
   }
 
   return (
@@ -57,7 +54,7 @@ const List = () => {
         style={styles.listContainer}
         data={apiData}
         renderItem={({ item }) => (
-          <ProductItem product={item} handleAddToCart={(item: Products) => AddToCart(item)} />
+          <ProductItem product={item} handleAddToCart={(item: Products) => AddToCart(item)} cartItem={cartItems} />
         )}
         keyExtractor={item => item.id}
       />

@@ -3,6 +3,12 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const ProductItem = (props: any) => {
+  // console.log('sachin', props.cartItem)
+
+  const getAddedStatus = () => {
+    let isAvailable = props.cartItem.find((item:any) => item.id === props.product.id);
+    return isAvailable?.id
+  }
   return (
     <View style={styles.prodWrapper}>
       <Image
@@ -15,8 +21,11 @@ const ProductItem = (props: any) => {
         <Text style={styles.price}>Rs {props.product.price}</Text>
         <Text style={styles.colors}>Color: {props.product.colour}</Text>
       </View>
-      <TouchableOpacity style={styles.button} onPress={() => props.handleAddToCart(props.product)}>
-        <Text style={styles.btn}>Add To Cart</Text>
+      <TouchableOpacity style={styles.button} onPress={() => props.handleAddToCart(props.product)} disabled={getAddedStatus() === props.product?.id}>
+        
+        <Text style={styles.btn} >{
+          getAddedStatus() === props.product?.id ? 'Added' : 'Add to cart'
+        }</Text>
       </TouchableOpacity>
     </View>
   );
